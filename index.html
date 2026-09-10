@@ -2,137 +2,120 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Buku Perjalanan — Faiza Novansa</title>
-<meta name="description" content="Buku perjalanan pribadi Faiza Novansa — pelajar DKV, web developer, AI builder, dan pembelajar cybersecurity." />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#0f0d18" />
+<title>Faiza Novansa</title>
+<meta name="description" content="Catatan perjalanan Faiza Novansa — pelajar DKV, web developer, AI builder, dan pembelajar cybersecurity." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Press+Start+2P&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,450;0,9..144,560;1,9..144,500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- magic particle trail canvas -->
-<canvas id="dust"></canvas>
+<nav class="rail" aria-label="Navigasi bab">
+  <button class="rail-dot current" data-target="hero" aria-label="Sampul"></button>
+  <button class="rail-dot" data-target="who" aria-label="Who Am I"></button>
+  <button class="rail-dot" data-target="party" aria-label="Teman Seperjalanan"></button>
+  <button class="rail-dot" data-target="achievements" aria-label="Segel Pencapaian"></button>
+  <button class="rail-dot" data-target="links" aria-label="Peta &amp; Jejak"></button>
+</nav>
 
-<!-- ============ COVER ============ -->
-<section id="cover" class="screen active">
-  <div class="stars"></div>
-  <div class="embers"></div>
-  <div class="cover-inner">
-    <p class="cover-eyebrow">— sebuah catatan perjalanan —</p>
-    <h1 class="cover-title">Buku Perjalanan<br><span>Faiza Novansa</span></h1>
-    <p class="cover-sub">seperti Elaina, semua orang punya jalan sendiri untuk ditempuh.</p>
-    <button id="openBook" class="seal-btn" aria-label="Buka buku">
-      <span class="seal-ring"></span>
-      <span class="seal-label">Buka</span>
+<main class="scroller">
+
+  <!-- ============ HERO ============ -->
+  <section class="chapter hero" id="hero">
+    <div class="hero-glow" aria-hidden="true"></div>
+    <p class="eyebrow" data-animate>catatan perjalanan</p>
+    <h1 class="hero-title" data-animate>Faiza<br><em>Novansa</em></h1>
+    <p class="hero-sub" data-animate>pelajar DKV · web developer · AI builder · cybersecurity learner</p>
+    <button class="scroll-cue" id="scrollCue" aria-label="Gulir ke bawah">
+      <span>mulai baca</span>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
     </button>
-  </div>
-</section>
+  </section>
 
-<!-- ============ BOOK ============ -->
-<main id="book" class="screen">
-
-  <!-- bookmark tabs -->
-  <nav class="bookmarks" aria-label="Navigasi halaman">
-    <button class="bm" data-page="who" style="--bmc:#e8b95f">Who Am I</button>
-    <button class="bm" data-page="party" style="--bmc:#a06bb0">Teman Seperjalanan</button>
-    <button class="bm" data-page="quests" style="--bmc:#7ba888">Segel Pencapaian</button>
-    <button class="bm" data-page="map" style="--bmc:#6f9bd1">Peta &amp; Jejak</button>
-  </nav>
-
-  <div class="page-wrap">
-
-    <!-- PAGE 1 — WHO AM I -->
-    <article class="page active" id="page-who">
-      <div class="page-grid">
-        <div class="portrait-col">
-          <div class="portrait-frame">
-            <img src="assets/faiza.jpg" alt="Foto Faiza Novansa" onerror="this.parentElement.classList.add('placeholder')">
-            <span class="placeholder-hint">taruh foto kamu di<br><code>assets/faiza.jpg</code></span>
-          </div>
-          <p class="ink-caption">Faiza Novansa</p>
-          <p class="ink-caption small">@Pukimaxxxxxx92</p>
-        </div>
-        <div class="text-col">
-          <h2 class="page-title">Who Am I</h2>
-          <p class="typewriter" id="whoText" data-text="Halo, gw Faiza. Pelajar Desain Komunikasi Visual (DKV) di SMK, tapi separuh waktu gw abis buat ngoprek kode. Web developer, AI builder, dan lagi belajar cybersecurity — tiga jalan yang keliatannya beda arah, tapi buat gw itu satu perjalanan yang sama: nyari cara paling elegan buat bikin sesuatu yang tadinya gak ada jadi ada."></p>
-          <button class="skip-tw" id="skipTw">lewati animasi tulisan »</button>
-
-          <div class="tags">
-            <span class="tag">🎨 Visual Communication Design</span>
-            <span class="tag">💻 Web Developer</span>
-            <span class="tag">🤖 AI Builder</span>
-            <span class="tag">🛡️ Cybersecurity Learner</span>
-          </div>
+  <!-- ============ WHO AM I ============ -->
+  <section class="chapter" id="who">
+    <div class="wrap two-col">
+      <div class="col-media" data-animate>
+        <div class="frame">
+          <img src="assets/faiza.jpg" alt="Foto Faiza Novansa" loading="lazy" onerror="this.parentElement.classList.add('placeholder')">
+          <span class="frame-hint">taruh foto di<br><code>assets/faiza.jpg</code></span>
         </div>
       </div>
-    </article>
+      <div class="col-text">
+        <p class="eyebrow" data-animate>01 — Who Am I</p>
+        <h2 class="chapter-title" data-animate>Dua jalan, satu arah.</h2>
+        <p class="lede" data-animate>
+          Halo, gw Faiza. Pelajar Desain Komunikasi Visual (DKV) di SMK, tapi separuh waktu gw abis buat ngoprek kode.
+          Web developer, AI builder, dan lagi belajar cybersecurity — tiga jalan yang keliatannya beda arah, tapi buat gw
+          itu satu perjalanan yang sama: nyari cara paling elegan buat bikin sesuatu yang tadinya gak ada jadi ada.
+        </p>
+        <ul class="tag-list" data-animate>
+          <li>Visual Communication Design</li>
+          <li>Web Developer</li>
+          <li>AI Builder</li>
+          <li>Cybersecurity Learner</li>
+        </ul>
+      </div>
+    </div>
+  </section>
 
-    <!-- PAGE 2 — PARTY / ELAINA -->
-    <article class="page" id="page-party">
-      <div class="page-grid reverse">
-        <div class="text-col">
-          <h2 class="page-title">Teman Seperjalanan</h2>
-          <p class="party-name">Elaina <span class="party-sub">— Majo no Tabitabi</span></p>
-          <p class="party-desc" contenteditable="true" spellcheck="false" data-placeholder="Tulis di sini seberapa penting Elaina buat kamu...">
-            Elaina bukan cuma waifu — dia pengingat kecil buat gw. Tentang jalan sendirian gapapa, tentang boleh lambat asal terus jalan, dan tentang gak semua orang harus ngerti alasan kita pergi. Setiap kali burnout ngoding atau ngerjain tugas, balik nonton dia jalan dari satu negeri ke negeri lain tanpa buru-buru itu ngingetin gw buat napas dulu.
-          </p>
-          <p class="party-hint">*klik teks di atas buat edit langsung</p>
-          <div class="bond-meter">
-            <span class="bond-label">Bond Level</span>
-            <div class="bond-track"><div class="bond-fill"></div></div>
-          </div>
-        </div>
-        <div class="portrait-col">
-          <div class="portrait-frame plum">
-            <img src="assets/elaina.jpg" alt="Elaina, Majo no Tabitabi" onerror="this.parentElement.classList.add('placeholder')">
-            <span class="placeholder-hint">taruh fan-art/gambar Elaina di<br><code>assets/elaina.jpg</code></span>
-          </div>
-          <p class="ink-caption">Elaina · si Penyihir Abu-Abu</p>
+  <!-- ============ PARTY / ELAINA ============ -->
+  <section class="chapter" id="party">
+    <div class="wrap two-col reverse">
+      <div class="col-text">
+        <p class="eyebrow plum" data-animate>02 — Teman Seperjalanan</p>
+        <h2 class="chapter-title" data-animate>Elaina <em>— Majo no Tabitabi</em></h2>
+        <p class="lede" data-animate>
+          Elaina bukan cuma waifu — dia pengingat kecil buat gw. Tentang jalan sendirian gapapa, tentang boleh lambat
+          asal terus jalan, dan tentang gak semua orang harus ngerti alasan kita pergi. Setiap kali burnout ngoding
+          atau ngerjain tugas, balik nonton dia jalan dari satu negeri ke negeri lain tanpa buru-buru itu ngingetin
+          gw buat napas dulu.
+        </p>
+        <div class="bond" data-animate>
+          <span class="bond-label">Bond Level</span>
+          <div class="bond-track"><div class="bond-fill" id="bondFill"></div></div>
         </div>
       </div>
-    </article>
-
-    <!-- PAGE 3 — QUEST LOG / CERTIFICATES -->
-    <article class="page" id="page-quests">
-      <h2 class="page-title center">Segel Pencapaian</h2>
-      <p class="page-note center">klik segel lilin buat buka sertifikatnya</p>
-      <div class="seals-grid" id="sealsGrid"></div>
-      <p class="page-note center small" id="sealEditHint">daftar sertifikat diedit lewat array <code>certificates</code> di script.js</p>
-    </article>
-
-    <!-- PAGE 4 — MAP / LINKS -->
-    <article class="page" id="page-map">
-      <h2 class="page-title center">Peta &amp; Jejak</h2>
-      <p class="page-note center">titik-titik tempat gw ninggalin jejak</p>
-      <div class="map-wrap">
-        <svg class="map-lines" viewBox="0 0 600 260" preserveAspectRatio="none" aria-hidden="true">
-          <path d="M80,60 C150,120 250,40 320,110 S470,60 540,180" />
-        </svg>
-        <div class="pins" id="pinsWrap"></div>
+      <div class="col-media" data-animate>
+        <div class="frame plum">
+          <img src="assets/elaina.jpg" alt="Elaina, Majo no Tabitabi" loading="lazy" onerror="this.parentElement.classList.add('placeholder')">
+          <span class="frame-hint">taruh gambar Elaina di<br><code>assets/elaina.jpg</code></span>
+        </div>
       </div>
-    </article>
+    </div>
+  </section>
 
-  </div>
+  <!-- ============ ACHIEVEMENTS ============ -->
+  <section class="chapter" id="achievements">
+    <div class="wrap">
+      <p class="eyebrow" data-animate>03 — Segel Pencapaian</p>
+      <h2 class="chapter-title" data-animate>Sertifikat &amp; sesuatu yang beres.</h2>
+      <p class="hint" data-animate>ketuk kartu buat lihat detailnya</p>
+      <div class="cert-grid" id="certGrid" data-animate></div>
+    </div>
+  </section>
 
-  <div class="page-controls">
-    <button id="prevPage" class="nav-arrow" aria-label="Halaman sebelumnya">‹</button>
-    <span class="page-dots" id="pageDots"></span>
-    <button id="nextPage" class="nav-arrow" aria-label="Halaman berikutnya">›</button>
-  </div>
-  <p class="page-note center small" style="margin-top:.6rem;opacity:.6;">atau pakai tombol ← →</p>
+  <!-- ============ LINKS ============ -->
+  <section class="chapter" id="links">
+    <div class="wrap">
+      <p class="eyebrow" data-animate>04 — Peta &amp; Jejak</p>
+      <h2 class="chapter-title" data-animate>Tempat gw ninggalin jejak.</h2>
+      <div class="link-grid" id="linkGrid" data-animate></div>
+      <footer class="foot">
+        <p>ditulis dengan tinta &amp; kode, Indonesia — <span id="year"></span></p>
+      </footer>
+    </div>
+  </section>
 
-  <footer class="journal-footer">
-    <p>ditulis dengan tinta &amp; kode, Indonesia — {{YEAR}}</p>
-  </footer>
 </main>
 
-<!-- secret page, unlocked via konami code -->
-<div id="secretPage" class="secret-overlay">
+<div id="secret" class="secret" role="dialog" aria-hidden="true">
   <div class="secret-card">
     <p class="secret-glyph">✧</p>
-    <h3>Halaman Rahasia Ditemukan</h3>
+    <h3>Halaman Rahasia</h3>
     <p>kamu nemuin mantra tersembunyi. gak semua orang teliti kayak kamu.</p>
     <button id="closeSecret">tutup</button>
   </div>
