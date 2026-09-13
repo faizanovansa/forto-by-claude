@@ -2,9 +2,8 @@
 // EDIT YOUR DATA HERE
 // ============================================================
 const certificates = [
-  { image: "assets/cert-1.jpg", title: "Ganti dengan judul sertifikat", issuer: "Coursera", date: "20XX" },
-  { image: "assets/cert-2.jpg", title: "Ganti dengan judul sertifikat", issuer: "Coursera", date: "20XX" },
-  { image: "assets/cert-3.jpg", title: "Ganti dengan judul sertifikat", issuer: "Coursera", date: "20XX" },
+  { image: "assets/cert-1.jpg", title: "AI Fundamentals", issuer: "Google · Coursera", date: "16 Agu 2026" },
+  { image: "assets/cert-2.jpg", title: "Introduction to AI", issuer: "Google · Coursera", date: "1 Sep 2026" },
 ];
 
 const links = [
