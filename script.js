@@ -2,9 +2,9 @@
 // EDIT YOUR DATA HERE
 // ============================================================
 const certificates = [
-  { title: "Ganti dengan sertifikat Coursera kamu", issuer: "Coursera", date: "20XX", icon: "🎓" },
-  { title: "Ganti dengan sertifikat Coursera kamu", issuer: "Coursera", date: "20XX", icon: "📜" },
-  { title: "Ganti dengan sertifikat Coursera kamu", issuer: "Coursera", date: "20XX", icon: "🧾" },
+  { image: "assets/cert-1.jpg", title: "Ganti dengan judul sertifikat", issuer: "Coursera", date: "20XX" },
+  { image: "assets/cert-2.jpg", title: "Ganti dengan judul sertifikat", issuer: "Coursera", date: "20XX" },
+  { image: "assets/cert-3.jpg", title: "Ganti dengan judul sertifikat", issuer: "Coursera", date: "20XX" },
 ];
 
 const links = [
@@ -29,23 +29,45 @@ function svgIcon(name){
 
 // ---------- build certificate cards ----------
 const certGrid = document.getElementById('certGrid');
-certificates.forEach(cert => {
-  const card = document.createElement('div');
+certificates.forEach((cert, i) => {
+  const card = document.createElement('figure');
   card.className = 'cert-card';
   card.innerHTML = `
-    <div class="cert-card-inner">
-      <div class="cert-face front">
-        <span class="icon">${cert.icon}</span>
-        <span class="label">ketuk untuk lihat</span>
-      </div>
-      <div class="cert-face back">
-        <h4>${cert.title}</h4>
-        <p>${cert.issuer} · ${cert.date}</p>
-      </div>
-    </div>`;
-  card.addEventListener('click', () => card.classList.toggle('flipped'));
+    <button class="cert-thumb" data-idx="${i}" aria-label="Perbesar sertifikat: ${cert.title}">
+      <img src="${cert.image}" alt="${cert.title}" loading="lazy" onerror="this.parentElement.classList.add('placeholder')">
+      <span class="frame-hint">taruh sertifikat di<br><code>${cert.image}</code></span>
+    </button>
+    <figcaption>
+      <span class="cert-title">${cert.title}</span>
+      <span class="cert-meta">${cert.issuer} · ${cert.date}</span>
+    </figcaption>`;
   certGrid.appendChild(card);
 });
+
+// ---------- lightbox ----------
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightboxImg');
+const lightboxCap = document.getElementById('lightboxCap');
+
+function openLightbox(idx){
+  const cert = certificates[idx];
+  lightboxImg.src = cert.image;
+  lightboxImg.alt = cert.title;
+  lightboxCap.textContent = `${cert.title} — ${cert.issuer} · ${cert.date}`;
+  lightbox.classList.add('show');
+}
+function closeLightbox(){
+  lightbox.classList.remove('show');
+}
+certGrid.addEventListener('click', (e) => {
+  const btn = e.target.closest('.cert-thumb');
+  if (btn && !btn.classList.contains('placeholder')) {
+    openLightbox(Number(btn.dataset.idx));
+  }
+});
+document.getElementById('lightboxClose')?.addEventListener('click', closeLightbox);
+lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+window.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
 
 // ---------- build link cards ----------
 const linkGrid = document.getElementById('linkGrid');
