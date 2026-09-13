@@ -2,137 +2,201 @@
 // EDIT YOUR DATA HERE
 // ============================================================
 const certificates = [
-  { image: "assets/cert-1.jpg", title: "AI Fundamentals", issuer: "Google · Coursera", date: "16 Agu 2026" },
-  { image: "assets/cert-2.jpg", title: "Introduction to AI", issuer: "Google · Coursera", date: "1 Sep 2026" },
+  // { title: "Nama Sertifikat", issuer: "Coursera / Nama Penerbit", date: "2026", icon: "🎓" },
+  { title: "Ganti dengan sertifikat Coursera kamu", issuer: "Coursera", date: "20XX", icon: "🎓" },
+  { title: "Ganti dengan sertifikat Coursera kamu", issuer: "Coursera", date: "20XX", icon: "📜" },
+  { title: "Ganti dengan sertifikat Coursera kamu", issuer: "Coursera", date: "20XX", icon: "🧾" },
 ];
 
 const links = [
-  { name: "Instagram", url: "https://instagram.com/", icon: "camera" },
-  { name: "Blogger", url: "https://faizanovansa.blogspot.com", icon: "quill" },
-  { name: "GitHub", url: "https://github.com/faizanovansa", icon: "code" },
-  { name: "LinkedIn", url: "https://linkedin.com/", icon: "brief" },
+  { name: "Instagram", url: "https://instagram.com/", color: "#c9749b", x: 14, y: 30 },
+  { name: "Blogger", url: "https://faizanovansa.blogspot.com", color: "#e8b95f", x: 40, y: 68 },
+  { name: "GitHub", url: "https://github.com/faizanovansa", color: "#948dab", x: 66, y: 24 },
+  { name: "LinkedIn", url: "https://linkedin.com/", color: "#6f9bd1", x: 88, y: 62 },
 ];
 // ============================================================
 
-const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const icons = {
-  camera: '<path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/>',
-  quill: '<path d="M20 4c-6 0-14 4-16 14 4-1 6-3 7-5M20 4c0 6-4 12-9 14M20 4l-9 14"/>',
-  code: '<path d="M9 8l-5 4 5 4M15 8l5 4-5 4"/>',
-  brief: '<rect x="3" y="7" width="18" height="12" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>'
-};
-
-function svgIcon(name){
-  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${icons[name] || ''}</svg>`;
-}
-
-// ---------- build certificate cards ----------
-const certGrid = document.getElementById('certGrid');
-certificates.forEach((cert, i) => {
-  const card = document.createElement('figure');
-  card.className = 'cert-card';
-  card.innerHTML = `
-    <button class="cert-thumb" data-idx="${i}" aria-label="Perbesar sertifikat: ${cert.title}">
-      <img src="${cert.image}" alt="${cert.title}" loading="lazy" onerror="this.parentElement.classList.add('placeholder')">
-      <span class="frame-hint">taruh sertifikat di<br><code>${cert.image}</code></span>
-    </button>
-    <figcaption>
-      <span class="cert-title">${cert.title}</span>
-      <span class="cert-meta">${cert.issuer} · ${cert.date}</span>
-    </figcaption>`;
-  certGrid.appendChild(card);
+document.getElementById('closeSecret')?.addEventListener('click', () => {
+  document.getElementById('secretPage').classList.remove('show');
 });
 
-// ---------- lightbox ----------
-const lightbox = document.getElementById('lightbox');
-const lightboxImg = document.getElementById('lightboxImg');
-const lightboxCap = document.getElementById('lightboxCap');
+const pageOrder = ['who', 'party', 'quests', 'map'];
+let currentIndex = 0;
 
-function openLightbox(idx){
-  const cert = certificates[idx];
-  lightboxImg.src = cert.image;
-  lightboxImg.alt = cert.title;
-  lightboxCap.textContent = `${cert.title} — ${cert.issuer} · ${cert.date}`;
-  lightbox.classList.add('show');
+function buildDots(){
+  const wrap = document.getElementById('pageDots');
+  wrap.innerHTML = pageOrder.map((_, i) => `<span class="dot${i===0?' current':''}"></span>`).join('');
 }
-function closeLightbox(){
-  lightbox.classList.remove('show');
-}
-certGrid.addEventListener('click', (e) => {
-  const btn = e.target.closest('.cert-thumb');
-  if (btn && !btn.classList.contains('placeholder')) {
-    openLightbox(Number(btn.dataset.idx));
+
+function goToPage(id){
+  const idx = pageOrder.indexOf(id);
+  if (idx === -1) return;
+  currentIndex = idx;
+
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+
+  document.querySelectorAll('.bm').forEach(b => b.classList.toggle('current', b.dataset.page === id));
+  document.querySelectorAll('.page-dots .dot').forEach((d, i) => d.classList.toggle('current', i === idx));
+
+  if (id === 'party') {
+    requestAnimationFrame(() => {
+      document.querySelector('.bond-fill').style.width = '92%';
+    });
   }
-});
-document.getElementById('lightboxClose')?.addEventListener('click', closeLightbox);
-lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
-window.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
+  if (id === 'who') startTypewriter();
+}
 
-// ---------- build link cards ----------
-const linkGrid = document.getElementById('linkGrid');
+document.querySelectorAll('.bm').forEach(btn => {
+  btn.addEventListener('click', () => goToPage(btn.dataset.page));
+});
+document.getElementById('prevPage').addEventListener('click', () => {
+  goToPage(pageOrder[(currentIndex - 1 + pageOrder.length) % pageOrder.length]);
+});
+document.getElementById('nextPage').addEventListener('click', () => {
+  goToPage(pageOrder[(currentIndex + 1) % pageOrder.length]);
+});
+
+// ---------- cover -> book ----------
+document.getElementById('openBook').addEventListener('click', () => {
+  document.getElementById('cover').classList.remove('active');
+  document.getElementById('book').classList.add('active');
+  buildDots();
+  goToPage('who');
+});
+
+// ---------- typewriter ----------
+let twTimer = null;
+function startTypewriter(){
+  const el = document.getElementById('whoText');
+  if (el.dataset.done === '1') return;
+  const full = el.dataset.text;
+  el.textContent = '';
+  el.classList.remove('done');
+  let i = 0;
+  clearInterval(twTimer);
+  twTimer = setInterval(() => {
+    el.textContent = full.slice(0, i);
+    i++;
+    if (i > full.length) {
+      clearInterval(twTimer);
+      el.classList.add('done');
+      el.dataset.done = '1';
+      document.getElementById('skipTw').classList.add('hidden');
+    }
+  }, 18);
+}
+document.getElementById('skipTw').addEventListener('click', () => {
+  clearInterval(twTimer);
+  const el = document.getElementById('whoText');
+  el.textContent = el.dataset.text;
+  el.classList.add('done');
+  el.dataset.done = '1';
+  document.getElementById('skipTw').classList.add('hidden');
+});
+
+// ---------- wax seals (certificates) ----------
+const sealsGrid = document.getElementById('sealsGrid');
+certificates.forEach((cert, i) => {
+  const btn = document.createElement('button');
+  btn.className = 'seal';
+  btn.innerHTML = `<span><span class="seal-icon">${cert.icon}</span>buka segel</span>`;
+  btn.addEventListener('click', () => {
+    btn.classList.add('broken');
+    btn.innerHTML = `<span><span class="seal-icon">✓</span>terbuka</span>`;
+    showCertDetail(cert, i);
+  });
+  sealsGrid.appendChild(btn);
+});
+
+function showCertDetail(cert, i){
+  let box = document.getElementById('cert-detail-box');
+  if (!box) {
+    box = document.createElement('div');
+    box.id = 'cert-detail-box';
+    box.className = 'cert-detail';
+    document.getElementById('page-quests').insertBefore(box, document.getElementById('sealEditHint'));
+  }
+  box.classList.remove('show');
+  void box.offsetWidth;
+  box.innerHTML = `<h4>${cert.title}</h4><p>${cert.issuer} · ${cert.date}</p>`;
+  box.classList.add('show');
+}
+
+// ---------- map pins ----------
+const pinsWrap = document.getElementById('pinsWrap');
 links.forEach(link => {
   const a = document.createElement('a');
-  a.className = 'link-card';
+  a.className = 'pin';
   a.href = link.url;
   a.target = '_blank';
   a.rel = 'noopener noreferrer';
-  a.innerHTML = `${svgIcon(link.icon)}<span>${link.name}</span>`;
-  linkGrid.appendChild(a);
+  a.style.left = link.x + '%';
+  a.style.top = link.y + '%';
+  a.style.setProperty('--pin-color', link.color);
+  a.innerHTML = `<span class="pin-dot"></span><span class="pin-label">${link.name}</span>`;
+  pinsWrap.appendChild(a);
 });
 
 // ---------- footer year ----------
-const yearEl = document.getElementById('year');
-if (yearEl) yearEl.textContent = new Date().getFullYear();
+const footerP = document.querySelector('.journal-footer p');
+if (footerP) footerP.textContent = footerP.textContent.replace('{{YEAR}}', new Date().getFullYear());
 
-// ---------- rail nav + reveal, single IntersectionObserver ----------
-const chapters = Array.from(document.querySelectorAll('.chapter'));
-const railDots = Array.from(document.querySelectorAll('.rail-dot'));
+// ---------- magic dust cursor trail ----------
+(function(){
+  const canvas = document.getElementById('dust');
+  const ctx = canvas.getContext('2d');
+  let w, h, particles = [];
+  function resize(){ w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
+  window.addEventListener('resize', resize);
+  resize();
 
-function revealChapter(chapter){
-  const items = chapter.querySelectorAll('[data-animate]');
-  items.forEach((el, i) => {
-    el.style.transitionDelay = reduceMotion ? '0ms' : (i * 60) + 'ms';
-    el.classList.add('is-visible');
-  });
-  if (chapter.id === 'party') {
-    const fill = document.getElementById('bondFill');
-    if (fill) requestAnimationFrame(() => { fill.style.width = '92%'; });
-  }
-}
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
-      const id = entry.target.id;
-      railDots.forEach(d => d.classList.toggle('current', d.dataset.target === id));
-      revealChapter(entry.target);
+  window.addEventListener('pointermove', (e) => {
+    if (reduceMotion) return;
+    for (let n = 0; n < 2; n++) {
+      particles.push({
+        x: e.clientX, y: e.clientY,
+        vx: (Math.random() - 0.5) * 0.6,
+        vy: -Math.random() * 0.6 - 0.2,
+        life: 1,
+        r: Math.random() * 1.6 + 0.6,
+        hue: Math.random() > 0.5 ? '232,185,95' : '160,107,176'
+      });
     }
-  });
-}, { threshold: [0.5] });
+    if (particles.length > 160) particles.splice(0, particles.length - 160);
+  }, { passive: true });
 
-chapters.forEach(ch => observer.observe(ch));
+  function tick(){
+    ctx.clearRect(0, 0, w, h);
+    particles.forEach(p => {
+      p.x += p.vx; p.y += p.vy; p.life -= 0.018;
+      ctx.beginPath();
+      ctx.fillStyle = `rgba(${p.hue},${Math.max(p.life,0)*0.7})`;
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fill();
+    });
+    particles = particles.filter(p => p.life > 0);
+    requestAnimationFrame(tick);
+  }
+  if (!reduceMotion) tick();
+})();
 
-// ---------- navigation ----------
-function goTo(id){
-  const el = document.getElementById(id);
-  if (el) el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
-}
-railDots.forEach(dot => dot.addEventListener('click', () => goTo(dot.dataset.target)));
-document.getElementById('scrollCue')?.addEventListener('click', () => goTo('who'));
-
-// ---------- secret (konami code) ----------
-document.getElementById('closeSecret')?.addEventListener('click', () => {
-  document.getElementById('secret').classList.remove('show');
-});
+// ---------- konami code easter egg ----------
 (function(){
   const seq = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
   let pos = 0;
   window.addEventListener('keydown', (e) => {
     const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
-    pos = (key === seq[pos]) ? pos + 1 : (key === seq[0] ? 1 : 0);
-    if (pos === seq.length) {
-      document.getElementById('secret').classList.add('show');
-      pos = 0;
+    if (key === seq[pos]) {
+      pos++;
+      if (pos === seq.length) {
+        document.getElementById('secretPage').classList.add('show');
+        pos = 0;
+      }
+    } else {
+      pos = (key === seq[0]) ? 1 : 0;
     }
   });
 })();
